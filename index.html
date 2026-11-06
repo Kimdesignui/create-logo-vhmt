@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Logo Studio - xử lý logo bằng AI, thêm text và xuất PNG, JPG, SVG." />
+    <link rel="icon" href="/assets/logo-bvdk-moc-chau-short.svg" />
+    <title>Logo Studio · Xử lý logo bằng AI</title>
+  </head>
+  <body>
+    <div id="app" class="app-shell">
+      <header class="topbar rounded-2xl bg-white/70 shadow-sm ring-1 ring-white/80 backdrop-blur-xl">
+        <a class="brand" href="/" aria-label="Logo Studio">
+          <span class="brand-mark">LS</span>
+          <span><span class="brand-kicker">Logo Studio</span><strong>AI logo composer</strong></span>
+        </a>
+        <div class="topbar-actions"><span id="processing-status" class="status-pill">Sẵn sàng</span><button id="reset-all" class="button button-ghost" type="button">Làm mới</button></div>
+      </header>
+
+      <main class="studio-layout">
+        <section class="panel panel-source rounded-2xl bg-white/80 shadow-xl ring-1 ring-slate-200/80 backdrop-blur-xl">
+          <div class="panel-heading"><div><span class="step">01</span><h1>Logo gốc</h1></div><span class="panel-note">SVG / PNG / JPG</span></div>
+          <label class="dropzone" for="image-input"><span class="dropzone-icon" aria-hidden="true">＋</span><strong>Chọn hoặc kéo thả logo</strong><span>Hỗ trợ SVG, PNG, JPG, WEBP</span><input id="image-input" type="file" accept="image/png,image/jpeg,image/jpg,image/webp,image/svg+xml" /></label>
+          <div class="source-preview checkerboard" aria-label="Xem logo gốc"><img id="source-image" alt="Logo gốc" /><div id="source-placeholder" class="placeholder"><span class="placeholder-icon">◌</span><span>Logo sẽ hiển thị tại đây</span></div></div>
+          <div class="ai-actions">
+            <button id="remove-bg" class="action-card" type="button" data-tooltip="Giữ vùng trắng bên trong logo, chỉ xóa nền ngoài."><span class="action-icon">✦</span><span><strong>Tách nền AI</strong><small>Xóa nền trắng ngoài logo</small></span></button>
+            <button id="enhance-image" class="action-card" type="button" data-tooltip="Tăng tương phản, màu và độ phân giải cục bộ."><span class="action-icon">⌁</span><span><strong>Tăng nét AI</strong><small>Làm rõ biên và màu sắc</small></span></button>
+          </div>
+          <p id="ai-note" class="helper-text">Chế độ cục bộ: xử lý ngay trên máy, không gửi ảnh lên máy chủ.</p>
+        </section>
+
+        <section class="panel panel-canvas rounded-2xl bg-white/80 shadow-xl ring-1 ring-slate-200/80 backdrop-blur-xl">
+          <div class="panel-heading"><div><span class="step">02</span><h2>Bố cục xuất file</h2></div><span id="canvas-size-label" class="panel-note">2400 × 900 px</span></div>
+          <div id="preview-frame" class="preview-frame checkerboard"><div id="preview-root" class="preview-root empty-preview"><span class="preview-empty-icon">✧</span><strong>Preview sẽ hiển thị tại đây</strong><span>Upload logo để bắt đầu</span></div></div>
+          <div class="canvas-meta"><span><i class="legend-dot dot-logo"></i> Logo</span><span><i class="legend-dot dot-text"></i> Text căn giữa theo chiều cao logo</span><span><i class="legend-dot dot-gap"></i> Khoảng cách có thể điều chỉnh</span></div>
+        </section>
+
+        <aside class="panel panel-settings rounded-2xl bg-white/90 shadow-xl ring-1 ring-slate-200/80 backdrop-blur-xl">
+          <div class="panel-heading"><div><span class="step">03</span><h2>Thiết lập</h2></div></div>
+          <div class="settings-scroll">
+            <section class="settings-section">
+              <div class="section-title"><span>Text đi kèm</span><span class="section-badge">2 dòng</span></div>
+              <label class="check-field"><input id="preserve-original-logo" type="checkbox" /><span>Giữ nguyên bố cục logo gốc</span></label>
+              <p class="helper-text mode-note">Dùng cho file logo đã có sẵn biểu tượng và chữ; khi bật, tool không chèn thêm text.</p>
+              <label class="field"><span>Content phụ</span><textarea id="secondary-text" rows="2" placeholder="Ví dụ: Content phụ hoặc tên đơn vị">TRƯỜNG THPT</textarea></label>
+              <div class="field-grid"><label class="field"><span>Màu content phụ</span><input id="secondary-color" class="color-input" type="color" value="#1EBFA7" /></label><label class="field field-grow"><span>Cỡ chữ <output id="secondary-size-output">16</output> px</span><input id="secondary-size" type="range" min="1" max="180" step="1" value="16" /></label></div>
+              <label class="field"><span>Content chính</span><textarea id="text-input" rows="2" placeholder="Nhập content chính">THẢO NGUYÊN</textarea></label>
+              <div class="field-grid"><label class="field"><span>Màu content chính</span><input id="text-color" class="color-input" type="color" value="#173B8F" /></label><label class="field field-grow"><span>Cỡ chữ <output id="font-size-output">16</output> px</span><input id="font-size" type="range" min="1" max="260" step="1" value="16" /></label></div>
+              <label class="field"><span>Font content phụ</span><select id="secondary-font-select"><option value="utm-helve-bold">UTM Helve Bold</option><option value="utm-helve">UTM Helve</option><option value="utm-helvetins">UTM HelvetIns</option><option value="be-vietnam-pro">Be Vietnam Pro · Google</option><option value="roboto">Roboto · Google</option><option value="noto-sans">Noto Sans · Google</option><option value="system">Segoe UI / Arial</option></select></label>
+              <label class="field"><span>Font content chính</span><select id="font-select"><option value="utm-helve-bold">UTM Helve Bold</option><option value="utm-helve">UTM Helve</option><option value="utm-helvetins">UTM HelvetIns</option><option value="be-vietnam-pro">Be Vietnam Pro · Google</option><option value="roboto">Roboto · Google</option><option value="noto-sans">Noto Sans · Google</option><option value="system">Segoe UI / Arial</option></select></label>
+              <label class="check-field"><input id="uppercase-text" type="checkbox" checked /><span>Tự động viết hoa</span></label>
+            </section>
+
+            <section class="settings-section">
+              <div class="section-title"><span>Vị trí & kích thước</span></div>
+              <div class="section-title dimension-title"><span>Kích thước biểu trưng</span><span class="section-badge">Logo riêng</span></div>
+              <div class="field-grid"><label class="field"><span>Biểu trưng rộng (px)</span><input id="mark-width-value" type="number" min="1" max="8000" step="1" value="360" /></label><label class="field"><span>Biểu trưng cao (px)</span><input id="mark-height-value" type="number" min="1" max="8000" step="1" value="360" /></label></div>
+              <label class="check-field"><input id="mark-lock-ratio" type="checkbox" checked /><span>Giữ tỉ lệ biểu trưng</span></label>
+              <div class="section-title dimension-title"><span>Kích thước bố cục</span><span class="section-badge">Tự tính</span></div>
+              <div class="field-grid dimension-readout"><label class="field"><span>Bố cục rộng (px)</span><output id="layout-width-output">0</output></label><label class="field"><span>Bố cục cao (px)</span><output id="layout-height-output">0</output></label></div>
+              <input id="logo-size" type="hidden" value="72" /><input id="logo-width" type="hidden" value="0" /><input id="logo-height" type="hidden" value="0" />
+              <label class="field"><span>Khoảng cách text tới logo <output id="gap-output">64</output> px</span><input id="text-gap" type="range" min="0" max="360" value="64" /></label>
+              <label class="check-field"><input id="wrap-text" type="checkbox" checked /><span>Tự xuống dòng khi không đủ chiều rộng</span></label>
+              <p class="helper-text">Hai dòng được căn giữa theo chiều cao logo. Dấu tiếng Việt được chừa khoảng an toàn để không bị cắt.</p>
+              <div class="field-grid padding-grid"><label class="field"><span>Padding trên</span><input id="padding-top" type="number" min="0" max="8000" step="1" value="0" /></label><label class="field"><span>Padding phải</span><input id="padding-right" type="number" min="0" max="8000" step="1" value="0" /></label><label class="field"><span>Padding dưới</span><input id="padding-bottom" type="number" min="0" max="8000" step="1" value="0" /></label><label class="field"><span>Padding trái</span><input id="padding-left" type="number" min="0" max="8000" step="1" value="0" /></label></div>
+              <label class="check-field"><input id="padding-lock" type="checkbox" /><span>Khóa padding 4 chiều</span></label>
+              <input id="export-width" type="hidden" value="0" /><input id="export-height" type="hidden" value="0" />
+              <p class="helper-text">Kích thước file tự tính từ logo, text, khoảng cách và padding; không tạo vùng trắng thừa do canvas cố định.</p>
+              <p id="settings-validation" class="field-error" role="alert" hidden></p>
+            </section>
+
+            <section class="settings-section export-section">
+              <div class="section-title"><span>Định dạng xuất</span></div>
+              <div class="format-grid"><label class="format-option is-selected" title="PNG: giữ nền trong suốt, phù hợp dùng trên web và nền màu."><input name="export-format" type="radio" value="png" checked /><strong>PNG</strong><small>Nền trong suốt</small></label><label class="format-option" title="JPG: file nhẹ, phù hợp khi dùng trên nền trắng; không hỗ trợ nền trong suốt."><input name="export-format" type="radio" value="jpg" /><strong>JPG</strong><small>File nhẹ</small></label><label class="format-option" title="SVG: ảnh vector sắc nét ở mọi kích thước; text được convert thành path."><input name="export-format" type="radio" value="svg" /><strong>SVG</strong><small>Vector + text path</small></label></div>
+              <p class="helper-text">SVG sẽ tự chuyển text sang vector (path), nên không phụ thuộc font trên máy nhận file.</p>
+              <button id="export-button" class="button button-primary export-button" type="button">Xuất file <span>↗</span></button>
+            </section>
+          </div>
+        </aside>
+      </main>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
