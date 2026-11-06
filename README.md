@@ -2,6 +2,8 @@
 
 Công cụ web ghép logo và nội dung chữ thành một bố cục hoàn chỉnh, hỗ trợ xử lý logo cục bộ và xuất PNG, JPG hoặc SVG.
 
+**Hướng dẫn dành cho người dùng:** [HUONG-DAN-SU-DUNG.md](HUONG-DAN-SU-DUNG.md)
+
 ## Mở công cụ
 
 - Bản online: [https://create-logo-vhmt.pages.dev/](https://create-logo-vhmt.pages.dev/)
