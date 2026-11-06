@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.11",
@@ -18,7 +19,9 @@
     "tailwindcss": "^4.3.4"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.67.0",
     "playwright": "^1.62.1",
-    "vite": "^7.1.3"
+    "vite": "^7.1.3",
+    "wrangler": "^4.158.0"
   }
 }
